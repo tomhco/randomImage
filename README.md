@@ -1,2 +1,2 @@
-# randomImage
-Code to return a random image from a database
+# Random Image
+HTTP server that returns a random image from a directory
