@@ -38,6 +38,11 @@ func (s *server) loadConfig() {
 }
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if len(s.imageNames) == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	w.Header().Add("Cache-Control", "no-cache, no-store, must-revalidate")
 	http.ServeFile(w, r, fmt.Sprintf("%s/%s", s.imageDirectory, s.imageNames[rand.Intn(len(s.imageNames))]))
 }
@@ -63,5 +68,6 @@ func main() {
 		}
 	}(srv)
 
+	log.Printf("listening for connections at %s\n", *httpAddr)
 	log.Fatal(http.ListenAndServe(*httpAddr, srv))
 }
